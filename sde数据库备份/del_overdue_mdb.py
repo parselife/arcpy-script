@@ -35,7 +35,7 @@ if __name__== "__main__":
 	work_path=arcpy.GetParameterAsText(0)
 
 	# 设置超期天数
-	days_overdue=arcpy.GetParameterAsText(1)
+	days_overdue=int(arcpy.GetParameterAsText(1))
 
 	if os.path.exists(work_path)==False:
 		arcpy.AddError("指定目录{0}不存在".format(work_path));
@@ -43,7 +43,7 @@ if __name__== "__main__":
 	i=0
 	for f in os.listdir(work_path):
 		f_mtime=time.localtime(os.path.getmtime(work_path+os.sep+f))
-		arcpy.AddMessage("文件{0} 生成时间 {1}".format(f,time.strftime("%Y-%m-%d %H%M%S",f_mtime)))
+		arcpy.AddMessage("文件{0} 生成时间 {1}".format(f,time.strftime("%Y-%m-%d %H:%M:%S",f_mtime)))
 		if DaysDiff(f_mtime,time.localtime())>=days_overdue:
 			arcpy.AddMessage("文件 {0} 已经超过设定的天数期限 {1},即将删除...".format(f,days_overdue))
 			try:
@@ -53,4 +53,4 @@ if __name__== "__main__":
 			except Exception, e:
 				arcpy.AddError(e.message)
 
-	arcpy.AddMessage("本次共删除 {0}  个过期文件.".format(i))
+	arcpy.AddMessage("本次共删除 {0} 个过期文件.".format(i))
