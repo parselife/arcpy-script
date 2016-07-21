@@ -248,11 +248,15 @@ if __name__== "__main__":
 
         arcpy.AddMessage("开始备份数据至mdb数据库...")
 
-        CopyFeatureClasses(source_sde_path,mdb_dir_path+os.sep+file_name,start_num,source_sde_settings[1])        
+        CopyFeatureClasses(source_sde_path,mdb_dir_path+os.sep+file_name,start_num,source_sde_settings[1])
 
-    # CopyFeatureClasses(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+        CopyDatasets(source_sde_path,mdb_dir_path+os.sep+file_name,start_num,source_sde_settings[1])   
 
-    #CopyDatasets(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+        arcpy.AddMessage("备份至 {0} mdb数据库成功!".format(mdb_dir_path+os.sep+file_name))     
+
+    CopyFeatureClasses(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+
+    CopyDatasets(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
 
     #CopyTables(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
 
