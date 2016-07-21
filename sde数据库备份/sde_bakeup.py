@@ -2,6 +2,7 @@
 import arcpy
 from arcpy import env
 import os
+import time
 import sys
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
@@ -201,6 +202,8 @@ def CopyTables(src_db,tar_db,num,prefix):
 
 if __name__== "__main__":
 
+    TIME_FORMAT="%Y%m%d_%H%M%S"
+
     work_path = r"C:\TEMP\AGS"
     env.overwriteOutput = True
 
@@ -212,6 +215,8 @@ if __name__== "__main__":
     # 接收输入参数 #
     source_sde_settings=arcpy.GetParameterAsText(0).split(",")
     target_sde_settings=arcpy.GetParameterAsText(1).split(",")
+    # mdb 文件目录
+    mdb_dir_path=arcpy.GetParameterAsText(2)
     
     # 设置源数据库和目标数据库的ArcSDE连接文件位置 #
     source_sde_path=work_path+os.sep+"source.sde"
@@ -226,17 +231,28 @@ if __name__== "__main__":
     arcpy.AddMessage("源数据库:{0},连接参数:{1}".format(source_sde_path,source_sde_settings[0]))
     arcpy.AddMessage("目标数据库:{0},连接参数:{1}".format(target_sde_path,target_sde_settings[0]))
 
-    # 压缩源数据库
-    #arcpy.AddMessage("压缩数据库...");
-    #arcpy.Compress_management(source_sde_path);
-
-    arcpy.AddMessage("开始复制数据...")
-
     start_num=len(source_sde_settings[1])+1
 
-    CopyFeatureClasses(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+    # 压缩源数据库
+    arcpy.AddMessage("压缩源数据库...");
+    arcpy.Compress_management(source_sde_path);
 
-    CopyDatasets(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+    if len(mdb_dir_path)>0:
+
+        # 创建此次备份的mdb文件
+        if os.path.exists(mdb_dir_path)==False:
+            os.makedirs(mdb_dir_path)
+
+        file_name=time.strftime(TIME_FORMAT,time.localtime())+".mdb"
+        arcpy.CreatePersonalGDB_management(mdb_dir_path,file_name)
+
+        arcpy.AddMessage("开始备份数据至mdb数据库...")
+
+        CopyFeatureClasses(source_sde_path,mdb_dir_path+os.sep+file_name,start_num,source_sde_settings[1])        
+
+    # CopyFeatureClasses(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
+
+    #CopyDatasets(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
 
     #CopyTables(source_sde_path,target_sde_path,start_num,source_sde_settings[1])
 
