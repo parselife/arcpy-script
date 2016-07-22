@@ -19,7 +19,7 @@ def CreateSdeConnection(out_folder_path,out_name,instance,username,password):
                                           password,
                                           "SAVE_USERNAME")
     except Exception, e:
-         arcpy.AddError(e.message);
+         arcpy.AddError(e.message)
 
 # 对要素类进行数据比较 未找到差异时将为“真”，在检测到差异时则为“假”
 def CompareFeatureClass(base_features,test_features):
@@ -41,7 +41,7 @@ def CompareFeatureClass(base_features,test_features):
         return compare_result.getOutput(0)
 
     except Exception, e:
-        arcpy.AddError(e.message);    
+        arcpy.AddError(e.message)    
 
 #拷贝单个要素类对象，不在数据集内的要素类  
 def CopyFeatureClasses(src_db,tar_db,num,prefix):  
@@ -146,7 +146,7 @@ def CopyDatasets(src_db,tar_db,num,prefix):
   
     except Exception as e:  
   
-        arcpy.AddError(e.message); 
+        arcpy.AddError(e.message) 
 
 #拷贝普通属性表  
 def CopyTables(src_db,tar_db,num,prefix):  
@@ -197,7 +197,7 @@ def CopyTables(src_db,tar_db,num,prefix):
   
     except Exception as e:  
   
-        arcpy.AddError(e.message);  
+        arcpy.AddError(e.message)  
 
 
 if __name__== "__main__":
@@ -235,7 +235,7 @@ if __name__== "__main__":
 
     # 压缩源数据库
     arcpy.AddMessage("压缩源数据库...");
-    arcpy.Compress_management(source_sde_path);
+    arcpy.Compress_management(source_sde_path)
 
     if len(mdb_dir_path)>0:
 

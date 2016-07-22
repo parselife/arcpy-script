@@ -26,7 +26,7 @@ def DaysDiff(start_time,end_time):
 		return abs(diff_day)+abs(diff_year)*365
 		
 	except Exception, e:
-		arcpy.AddError(e.message);
+		arcpy.AddError(e.message)
 	
 
 if __name__== "__main__":
